@@ -15,16 +15,16 @@ def display_ascii_art():
 
 # Function to generate a random line of characters
 def generate_random_line(length=60):
-    """Generate a random string of uppercase, lowercase, and numbers."""
+    """Generate a random string of lowercase letters and numbers."""
     chars = "abcdefghijklmnopqrstuvwxyz0123456789"
     return ''.join(random.choice(chars) for _ in range(length))
 
-# Random word list for seed phrases
-words = [
+# Dictionary of words for the seed phrase
+seed_words = {
     "robot", "tree", "unicorn", "water", "elephant", "cactus", "mountain", "guitar",
     "alligator", "camera", "pencil", "marker", "dinosaur", "telephone", "mouse", 
     "computer", "rocket", "spaceship", "galaxy", "river", "forest", "tiger", "piano"
-]
+}
 
 # Function to generate a random wallet address
 def generate_wallet_address(length=42):
@@ -32,10 +32,10 @@ def generate_wallet_address(length=42):
     chars = "abcdefghijklmnopqrstuvwxyz0123456789"
     return ''.join(random.choice(chars) for _ in range(length))
 
-# Function to generate a random seed phrase
+# Function to generate a random seed phrase with unique words
 def generate_seed_phrase():
-    """Generate a random seed phrase with 12 random words."""
-    return ' '.join(random.sample(words, 12))
+    """Generate a random seed phrase with 12 unique words."""
+    return ' '.join(random.sample(seed_words, 12))
 
 # Main mining simulation function
 def simulate_bitcoin_miner():
@@ -53,17 +53,29 @@ def simulate_bitcoin_miner():
         print(f"Mining in progress... (Will stop after {max_lines} attempts)\n")
 
         # Generate and display random lines of "code"
+        used_seed_words = set()  # To track used words for seed phrases
         for i in range(max_lines):
             if i % 2 == 0:
                 # Display random wallet address
                 print(f"Attempting to crack wallet address: {generate_wallet_address()}")
             else:
                 # Display random seed phrase
-                print(f"Attempting to crack seed phrase: {generate_seed_phrase()}")
+                while True:
+                    phrase = generate_seed_phrase()
+                    # Check if the seed phrase has unique words (no repetitions)
+                    phrase_words = set(phrase.split())
+                    if phrase_words not in used_seed_words:
+                        used_seed_words.add(frozenset(phrase_words))  # Save the phrase as used
+                        print(f"Attempting to crack seed phrase: {phrase}")
+                        break
             time.sleep(0.01)  # Slight delay for realism
 
+        # Randomly select a BTC amount between 0.3 and 1.4
+        btc_amount = round(random.uniform(0.3, 1.4), 2)
+
         # Display success message in orange color (terminal color code)
-        print("\n\033[38;5;214mSuccessfully mined 1 BTC. Bitcoin deposited to your wallet address.\033[0m")
+        print("\n\033[38;5;214mWallet address and seed phrase matched. Wallet cracked. "
+              f"{btc_amount} BTC has been deposited to your wallet address.\033[0m")
         print(f"Wallet: {wallet}\n")
 
         # Ask the user if they want to continue
