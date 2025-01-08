@@ -10,7 +10,8 @@ def display_ascii_art():
  |  _ <  | | | |    | |\/| | | | | . ` |  __| |  _  / 
  | |_) | | | | |____| |  | |_| |_| |\  | |____| | \ \ 
  |____/  |_|  \_____|_|  |_|_____|_| \_|______|_|  \_\
-                                                      
+
+                                                      ~Created by @tjm.builds on IG and Snapchat
    """)
 
 # Function to generate a random line of characters
@@ -35,9 +36,10 @@ def generate_wallet_address(length=42):
 # Function to generate a random seed phrase with unique words
 def generate_seed_phrase():
     """Generate a random seed phrase with 12 unique words."""
-    return ' '.join(random.sample(seed_words, 12))
+    seed_words_list = list(seed_words)  # Convert the set to a list
+    return ' '.join(random.sample(seed_words_list, 12))
 
-# Main mining simulation function
+# Function to simulate the Bitcoin mining process
 def simulate_bitcoin_miner():
     # Display the ASCII art
     display_ascii_art()
